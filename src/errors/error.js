@@ -1,0 +1,15 @@
+import ERROR from '../constants/error.js';
+import MessageFormat from '../utils/messageFormat.js';
+
+class CustomError extends Error {
+  constructor(message, name) {
+    super(MessageFormat.error(message));
+    this.name = name || this.constructor.name;
+  }
+
+  static menuBoard(message) {
+    return new CustomError(message, ERROR.name.menuBoard);
+  }
+}
+
+export default CustomError;
