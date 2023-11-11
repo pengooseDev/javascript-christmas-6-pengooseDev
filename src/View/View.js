@@ -26,6 +26,12 @@ class View {
     return date;
   }
 
+  async readOrder() {
+    const menu = await this.#reboundOnError(() => this.#inputView.readOrder());
+
+    return menu;
+  }
+
   printGreetingByMonth(month) {
     this.#outputView.printGreetingByMonth(month);
   }

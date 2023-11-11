@@ -1,5 +1,6 @@
 import EventPlanner from './Domain/EventPlanner.js';
 import View from './View/View.js';
+import Calander from './Model/Calander.js';
 
 class App {
   #eventPlanner = new EventPlanner();
@@ -10,20 +11,22 @@ class App {
     await this.#reservationProcess();
   }
 
-  #reboundOnError(callback) {
+  async #reboundOnError(callback) {
     try {
-      callback();
+      return callback();
     } catch (error) {
-      this.#view.alertError(error.message);
-      this.#reservationProcess();
+      this.#view.printReboundError(error.message);
+
+      return this.#reservationProcess();
     }
   }
 
   async #reservationProcess() {
-    const month = new Date().getMonth() + 1;
+    const currenMonth = Calander.getMonth();
 
-    this.#view.printGreetingByMonth(month);
-    const date = this.#view.readDate();
+    this.#view.printGreetingByMonth(currenMonth);
+    const date = await this.#view.readDate(currenMonth);
+    const order = await this.#view.readOrder();
   }
 }
 

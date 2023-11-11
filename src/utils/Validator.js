@@ -35,6 +35,12 @@ const Validator = {
   isInRange(number, min, max) {
     return number >= min && number <= max;
   },
+
+  isValidArray({ value, separator }) {
+    const array = value.split(separator);
+
+    return array.every((item) => !Validator.isSpace(item));
+  },
 };
 
 export default Validator;

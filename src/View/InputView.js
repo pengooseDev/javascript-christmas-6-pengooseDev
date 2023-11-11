@@ -3,6 +3,7 @@ import Validator from '../utils/Validator.js';
 import CustomError from '../errors/error.js';
 import MESSAGE from '../constants/message.js';
 import ERROR from '../constants/error.js';
+import Calander from '../Model/Calander.js';
 
 const InputView = {
   defaultRadix: 10,
@@ -42,13 +43,41 @@ const InputView = {
 
   async readDate() {
     const userInput = await Console.readLineAsync(MESSAGE.read.reservationDate);
-    const notPositiveInteger = !Validator.isPositiveInteger(userInput);
-    const notInRange = !Validator.isInRange(userInput, 1, 31); // FIXME: 1, 31을 상수로 빼야함
+    this.validateDate(userInput);
 
-    if (notPositiveInteger || notInRange) {
+    return parseInt(userInput, this.defaultRadix);
+  },
+
+  // FIXME: View가 날짜에 대한 정보를 들고있는게 맞나? OrderService로 추후에 넘기기.
+  validateDate(date) {
+    if (
+      !Validator.isPositiveInteger(date) ||
+      !Validator.isInRange(date, Calander.initialDay, Calander.getLastDay())
+    ) {
       throw CustomError.inputView(ERROR.message.invalidDate);
     }
-    return parseInt(userInput, this.defaultRadix);
+  },
+
+  async readOrder() {
+    const userInput = await Console.readLineAsync(MESSAGE.read.order);
+    this.validateOrderForm(userInput);
+
+    return userInput;
+  },
+
+  // FIXME: 이 친구들도 OrderService 완성되면 이동하기.
+  validateOrderForm(order) {
+    if (!Validator.isValidArray({ value: order, separator: ',' })) {
+      throw CustomError.inputView(ERROR.message.invalidOrder);
+    }
+
+    order.split(',').forEach(this.validateMenuForm.bind(this));
+  },
+
+  validateMenuForm(menu) {
+    if (!Validator.isValidArray({ value: menu, separator: '-' })) {
+      throw CustomError.inputView(ERROR.message.invalidOrder);
+    }
   },
 };
 
