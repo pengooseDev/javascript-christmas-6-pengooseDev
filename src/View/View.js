@@ -25,6 +25,10 @@ class View {
 
     return date;
   }
+
+  printGreetingByMonth(month) {
+    this.#outputView.printGreetingByMonth(month);
+  }
 }
 
 export default View;

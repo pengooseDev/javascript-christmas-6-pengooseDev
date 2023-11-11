@@ -1,6 +1,11 @@
 import { Console } from '@woowacourse/mission-utils';
+import MessageFormat from '../utils/messageFormat.js';
 
 const OutputView = {
+  printGreetingByMonth(month) {
+    Console.print(MessageFormat.greetingByMonth(month));
+  },
+
   printMenu() {
     Console.print('<주문 메뉴>');
   },

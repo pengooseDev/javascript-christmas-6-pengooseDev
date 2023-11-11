@@ -2,12 +2,11 @@ import EventPlanner from './Domain/EventPlanner.js';
 import View from './View/View.js';
 
 class App {
-  #eventPlanner;
+  #eventPlanner = new EventPlanner();
 
   #view = new View();
 
   async run() {
-    this.#setDependencies();
     await this.#reservationProcess();
   }
 
@@ -20,11 +19,10 @@ class App {
     }
   }
 
-  #setDependencies() {
-    this.#eventPlanner = new EventPlanner();
-  }
-
   async #reservationProcess() {
+    const month = new Date().getMonth() + 1;
+
+    this.#view.printGreetingByMonth(month);
     const date = this.#view.readDate();
   }
 }
