@@ -11,7 +11,7 @@ const message = Object.freeze({
 
   // menuBoard(create)
   invalidPrice: '유효하지 않은 가격입니다.',
-  duplicatedMenu: '중복된 메뉴가 존재합니다.',
+  duplicatedMenu: '메뉴판 생성 중, 중복된 메뉴를 발견하였습니다.',
 });
 
 const name = Object.freeze({

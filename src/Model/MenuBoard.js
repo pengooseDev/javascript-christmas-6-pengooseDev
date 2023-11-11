@@ -1,7 +1,6 @@
 import ERROR from '../constants/error.js';
 import CustomError from '../errors/error.js';
 import Validator from '../utils/Validator.js';
-import MessageFormat from '../utils/messageFormat.js';
 
 class MenuBoard {
   #menus = new Map();
@@ -51,11 +50,10 @@ class MenuBoard {
 
   #checkDuplicatedMenu(menus) {
     const names = menus.map(({ name }) => name);
-
     if (new Set(names).size !== names.length) {
-      const duplicatedName = this.#findDuplicateName(names);
-
-      throw CustomError.menuBoard(MessageFormat.duplicatedMenu(duplicatedName));
+      throw CustomError.menuBoard(
+        `${ERROR.message.duplicatedMenu} ${this.#findDuplicateName(names)}`,
+      );
     }
   }
 

@@ -37,10 +37,10 @@ describe('MenuBoard 클래스 테스트', () => {
       '중복된 이름의 메뉴가 존재하는 경우, 카테고리의 값과 상관없이 예외가 발생해야 한다.',
       (existMenu) => {
         // given1
-        const duplicatedMenu = [...validMenus, existMenu];
+        const invalidMenu = [...validMenus, existMenu];
 
         // when
-        const createMenuBoard = () => new MenuBoard(duplicatedMenu);
+        const createMenuBoard = () => new MenuBoard(invalidMenu);
 
         // then
         expect(createMenuBoard).toThrow(ERROR.message.duplicatedMenu);
