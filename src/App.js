@@ -1,5 +1,11 @@
+import View from './View/View.js';
+
 class App {
-  async run() {}
+  #view = new View();
+
+  async run() {
+    await this.#view.readDate();
+  }
 }
 
 export default App;

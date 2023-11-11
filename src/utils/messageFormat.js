@@ -4,7 +4,7 @@ const MessageFormat = {
   },
 
   duplicatedMenu(name) {
-    return this.error(`중복된 메뉴가 존재합니다. (${name})`);
+    return `${name} 메뉴가 중복으로 등록되었습니다.`;
   },
 };
 

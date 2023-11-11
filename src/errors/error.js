@@ -7,6 +7,10 @@ class CustomError extends Error {
     this.name = name || this.constructor.name;
   }
 
+  static inputView(message) {
+    return new CustomError(message, ERROR.name.inputView);
+  }
+
   static menuBoard(message) {
     return new CustomError(message, ERROR.name.menuBoard);
   }

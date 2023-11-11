@@ -31,6 +31,10 @@ const Validator = {
       Number(value) > 0
     );
   },
+
+  isInRange(number, min, max) {
+    return number >= min && number <= max;
+  },
 };
 
 export default Validator;
