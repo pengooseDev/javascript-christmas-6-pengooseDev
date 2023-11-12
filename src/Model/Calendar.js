@@ -1,4 +1,4 @@
-const Calander = {
+const Calendar = {
   initialDay: 1,
   missionMonth: 12,
 
@@ -18,4 +18,4 @@ const Calander = {
   },
 };
 
-export default Calander;
+export default Calendar;
