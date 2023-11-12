@@ -19,17 +19,24 @@ const order = Object.freeze({
   duplicatedOrder: '유효하지 않은 주문입니다.',
 });
 
+const calendar = Object.freeze({
+  invalidMonth: '유효하지 않은 월입니다.',
+  invalidDay: '유효하지 않은 일입니다.',
+});
+
 const message = Object.freeze({
   input,
   date,
   menuBoard,
   order,
+  calendar,
 });
 
 const name = Object.freeze({
   inputView: 'inputViewError',
   menuBoard: 'menuBoard',
   orderService: 'orderService',
+  calendar: 'calendar',
 });
 
 const ERROR = Object.freeze({
