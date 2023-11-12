@@ -52,7 +52,7 @@ class OrderService {
   #validateOrders(parsedOrders) {
     const orderedMenus = parsedOrders.map(({ menuName }) => menuName);
     if (new Set(orderedMenus).size !== orderedMenus.length) {
-      throw CustomError.orderService(ERROR.message.duplicatedOrder);
+      throw CustomError.orderService(ERROR.message.order.duplicatedOrder);
     }
 
     parsedOrders.forEach(({ quantity }) => this.#validateQuantity(quantity));
@@ -60,7 +60,7 @@ class OrderService {
 
   #validateQuantity(quantity) {
     if (!Validator.isPositiveInteger(quantity)) {
-      throw CustomError.orderService(ERROR.message.invalidQuantity);
+      throw CustomError.orderService(ERROR.message.order.invalidQuantity);
     }
   }
 }

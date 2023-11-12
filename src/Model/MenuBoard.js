@@ -31,7 +31,7 @@ class MenuBoard {
 
   #checkMenuExistence(name) {
     if (!this.#menus.has(name)) {
-      throw CustomError.menuBoard(ERROR.message.menuNotFound);
+      throw CustomError.menuBoard(ERROR.message.menuBoard.menuNotFound);
     }
   }
 
@@ -52,7 +52,9 @@ class MenuBoard {
     const names = menus.map(({ name }) => name);
     if (new Set(names).size !== names.length) {
       throw CustomError.menuBoard(
-        `${ERROR.message.duplicatedMenu} ${this.#findDuplicateName(names)}`,
+        `${ERROR.message.menuBoard.duplicatedMenu} ${this.#findDuplicateName(
+          names,
+        )}`,
       );
     }
   }
@@ -62,7 +64,7 @@ class MenuBoard {
     const isAllPositiveInteger = prices.every(Validator.isPositiveInteger);
 
     if (!isAllPositiveInteger) {
-      throw CustomError.menuBoard(ERROR.message.invalidPrice);
+      throw CustomError.menuBoard(ERROR.message.menuBoard.invalidPrice);
     }
   }
 }

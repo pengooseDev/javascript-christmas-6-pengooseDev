@@ -43,7 +43,7 @@ describe('MenuBoard 클래스 테스트', () => {
         const createMenuBoard = () => new MenuBoard(invalidMenu);
 
         // then
-        expect(createMenuBoard).toThrow(ERROR.message.duplicatedMenu);
+        expect(createMenuBoard).toThrow(ERROR.message.menuBoard.duplicatedMenu);
       },
     );
 
@@ -77,7 +77,7 @@ describe('MenuBoard 클래스 테스트', () => {
         const createMenuBoard = () => new MenuBoard(menusWithInvalidPrice);
 
         // then
-        expect(createMenuBoard).toThrow(ERROR.message.invalidPrice);
+        expect(createMenuBoard).toThrow(ERROR.message.menuBoard.invalidPrice);
       },
     );
   });
@@ -94,7 +94,7 @@ describe('MenuBoard 클래스 테스트', () => {
 
       expect(() => {
         menuBoard.selectMenu(nonExistentMenu);
-      }).toThrow(ERROR.message.menuNotFound);
+      }).toThrow(ERROR.message.menuBoard.menuNotFound);
     });
 
     test('메뉴를 조회하면 해당 메뉴의 상세 정보를 반환한다.', () => {
