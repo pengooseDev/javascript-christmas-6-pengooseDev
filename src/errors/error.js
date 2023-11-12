@@ -14,6 +14,10 @@ class CustomError extends Error {
   static menuBoard(message) {
     return new CustomError(message, ERROR.name.menuBoard);
   }
+
+  static orderService(message) {
+    return new CustomError(message, ERROR.name.orderService);
+  }
 }
 
 export default CustomError;

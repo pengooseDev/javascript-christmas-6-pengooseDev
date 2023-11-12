@@ -3,7 +3,7 @@ import Validator from '../utils/Validator.js';
 import CustomError from '../errors/error.js';
 import MESSAGE from '../constants/message.js';
 import ERROR from '../constants/error.js';
-import Calander from '../Model/Calander.js';
+import Calander from '../Model/Calendar.js';
 
 const InputView = {
   defaultRadix: 10,

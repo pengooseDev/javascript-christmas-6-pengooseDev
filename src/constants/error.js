@@ -16,11 +16,13 @@ const message = Object.freeze({
 
   // order
   invalidOrder: '유효하지 않은 주문입니다.',
+  invalidQuantity: '유효하지 않은 주문입니다.',
 });
 
 const name = Object.freeze({
   inputView: 'inputViewError',
   menuBoard: 'menuBoard',
+  orderService: 'orderService',
 });
 
 const ERROR = Object.freeze({

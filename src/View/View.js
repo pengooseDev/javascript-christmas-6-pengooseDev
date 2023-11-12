@@ -14,7 +14,7 @@ class View {
     try {
       return await callback();
     } catch (error) {
-      this.#outputView.printReboundError(error);
+      this.printReboundError(error);
 
       return this.#reboundOnError(callback);
     }
@@ -30,6 +30,10 @@ class View {
     const menu = await this.#reboundOnError(() => this.#inputView.readOrder());
 
     return menu;
+  }
+
+  printReboundError(error) {
+    this.#outputView.printReboundError(error);
   }
 
   printGreetingByMonth(month) {
