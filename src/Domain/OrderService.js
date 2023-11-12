@@ -11,7 +11,11 @@ class OrderService {
 
   static #menuFormLength = 2;
 
-  #menuBoard = new MenuBoard(defaultMenus);
+  #menuBoard;
+
+  constructor(menus = defaultMenus) {
+    this.#menuBoard = new MenuBoard(menus);
+  }
 
   getBill(orders) {
     const parsedOrders = this.#parseOrders(orders);
@@ -72,6 +76,7 @@ class OrderService {
   #getTotalPrice(parsedOrders) {
     return parsedOrders.reduce((acc, { menuName, quantity }) => {
       const { price } = this.#menuBoard.selectMenu(menuName);
+
       return acc + price * quantity;
     }, 0);
   }

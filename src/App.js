@@ -1,14 +1,16 @@
 import View from './View/View.js';
 import Calander from './Model/Calendar.js';
 import OrderService from './Domain/OrderService.js';
+import defaultMenus from './constants/menu.js';
 
 class App {
-  #orderService = new OrderService();
+  #orderService = new OrderService(defaultMenus);
 
   #view = new View();
 
   async run() {
-    await this.#reservationProcess();
+    const { month, date } = await this.#reservationProcess();
+    const bill = await this.#reboundOnError(() => this.#orderProcess());
   }
 
   /**
@@ -26,18 +28,18 @@ class App {
   }
 
   async #reservationProcess() {
-    const currenMonth = Calander.getMonth();
+    const month = Calander.getMonth();
 
-    this.#view.printGreetingByMonth(currenMonth);
-    const date = await this.#view.readDate(currenMonth);
-    const bill = await this.#reboundOnError(() => this.#orderProcess());
+    this.#view.printGreetingByMonth(month);
+    const date = await this.#view.readDate(month);
+
+    return { month, date };
   }
 
   async #orderProcess() {
     const order = await this.#view.readOrder();
-    const bill = this.#orderService.getBill(order);
 
-    return bill;
+    return this.#orderService.getBill(order);
   }
 }
 
