@@ -75,7 +75,7 @@ const InputView = {
   },
 
   validateMenuForm(menu) {
-    if (!Validator.isValidArray({ value: menu, separator: '-' })) {
+    if (!Validator.isValidArray({ value: menu, separator: '-', length: 2 })) {
       throw CustomError.inputView(ERROR.message.invalidOrder);
     }
   },

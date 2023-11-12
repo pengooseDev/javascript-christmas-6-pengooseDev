@@ -36,10 +36,13 @@ const Validator = {
     return number >= min && number <= max;
   },
 
-  isValidArray({ value, separator }) {
+  isValidArray({ value, separator, length = null }) {
     const array = value.split(separator);
 
-    return array.every((item) => !Validator.isSpace(item));
+    return (
+      array.every((item) => !Validator.isSpace(item)) &&
+      (length === null || array.length === length)
+    );
   },
 };
 
