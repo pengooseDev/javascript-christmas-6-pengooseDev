@@ -31,6 +31,21 @@ describe('MenuBoard 클래스 테스트', () => {
         name: 'menu4',
         price: 2_000,
       },
+      {
+        category: 'category2',
+        name: ' menu4',
+        price: 2_000,
+      },
+      {
+        category: 'category2',
+        name: 'menu4 ',
+        price: 2_000,
+      },
+      {
+        category: 'category2',
+        name: ' menu4 ',
+        price: 2_000,
+      },
     ];
 
     test.each(errorCases)(

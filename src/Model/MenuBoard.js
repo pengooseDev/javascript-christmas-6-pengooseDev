@@ -49,7 +49,7 @@ class MenuBoard {
   }
 
   #checkDuplicatedMenu(menus) {
-    const names = menus.map(({ name }) => name);
+    const names = menus.map(({ name }) => name.trim());
     if (new Set(names).size !== names.length) {
       throw CustomError.menuBoard(
         `${ERROR.message.menuBoard.duplicatedMenu} ${this.#findDuplicateName(
