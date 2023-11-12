@@ -13,6 +13,8 @@ class OrderService {
 
   getBill(orders) {
     const parsedOrders = this.#parseOrders(orders);
+    this.#validateOrders(parsedOrders);
+
     const orderedMenus = this.#getOrderedMenus(parsedOrders);
     const totalPrice = this.#getTotalPrice(parsedOrders);
 
@@ -35,7 +37,6 @@ class OrderService {
 
   #parseMenu(menu) {
     const [menuName, quantity] = menu.split(OrderService.#menuSeparator);
-    this.#validateQuantity(quantity);
     const parsedCount = Number(quantity);
 
     return { menuName, quantity: parsedCount };
@@ -46,6 +47,15 @@ class OrderService {
       const { price } = this.#menuBoard.selectMenu(menuName);
       return acc + price * quantity;
     }, 0);
+  }
+
+  #validateOrders(parsedOrders) {
+    const orderedMenus = parsedOrders.map(({ menuName }) => menuName);
+    if (new Set(orderedMenus).size !== orderedMenus.length) {
+      throw CustomError.orderService(ERROR.message.duplicatedOrder);
+    }
+
+    parsedOrders.forEach(({ quantity }) => this.#validateQuantity(quantity));
   }
 
   #validateQuantity(quantity) {
