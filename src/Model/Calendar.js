@@ -8,6 +8,8 @@ const Calendar = {
   initialMonth: 1,
   lastMonth: 12,
   missionMonth: 12,
+  missionFullYear: 2023,
+  missionWeekend: [5, 6],
 
   getMonth() {
     // const month = new Date().getMonth() + 1;
@@ -27,7 +29,7 @@ const Calendar = {
   },
 
   getLastDay() {
-    const year = new Date().getFullYear();
+    const year = this.missionFullYear;
     const month = this.getMonth();
 
     return new Date(year, month, 0).getDate();
@@ -40,6 +42,26 @@ const Calendar = {
     ) {
       throw CustomError.inputView(ERROR.message.calendar.invalidDay);
     }
+  },
+
+  isWeekend(month, day) {
+    const year = this.missionFullYear;
+    const date = new Date(year, month - 1, day);
+    const currentDay = date.getDay();
+
+    return this.missionWeekend.includes(currentDay);
+  },
+
+  isSunday(month, day) {
+    const year = this.missionFullYear;
+    const date = new Date(year, month - 1, day);
+    const currentDay = date.getDay();
+
+    return currentDay === 0;
+  },
+
+  isChristmas(month, day) {
+    return month === 12 && day === 25;
   },
 };
 

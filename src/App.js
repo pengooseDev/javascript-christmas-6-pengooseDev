@@ -2,15 +2,21 @@ import View from './View/View.js';
 import Calander from './Model/Calendar.js';
 import OrderService from './Domain/OrderService.js';
 import defaultMenus from './constants/menu.js';
+import PromotionService from './Domain/PromotionSerivce.js';
 
 class App {
   #orderService = new OrderService(defaultMenus);
 
+  #promotionService;
+
   #view = new View();
 
   async run() {
-    const { month, date } = await this.#reservationProcess();
+    const reservationDate = await this.#reservationProcess();
     const bill = await this.#reboundOnError(() => this.#orderProcess());
+    const promotions = this.#promotionProcess({ reservationDate, bill });
+
+    console.log(promotions);
   }
 
   /**
@@ -40,6 +46,17 @@ class App {
     const order = await this.#view.readOrder();
 
     return this.#orderService.getBill(order);
+  }
+
+  #promotionProcess({ reservationDate, bill }) {
+    const { month, date } = reservationDate;
+    const { totalPrice } = bill;
+    this.#promotionService = new PromotionService({ month, totalPrice });
+    return this.#promotionService.getPromotion({
+      month,
+      date,
+      bill,
+    });
   }
 }
 
