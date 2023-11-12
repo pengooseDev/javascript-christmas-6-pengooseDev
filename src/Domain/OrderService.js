@@ -9,11 +9,13 @@ class OrderService {
 
   static #menuSeparator = '-';
 
+  static #menuFormLength = 2;
+
   #menuBoard = new MenuBoard(defaultMenus);
 
   getBill(orders) {
     const parsedOrders = this.#parseOrders(orders);
-    this.#validateOrders(parsedOrders);
+    this.#validateParsedOrders(parsedOrders);
 
     const orderedMenus = this.#getOrderedMenus(parsedOrders);
     const totalPrice = this.#getTotalPrice(parsedOrders);
@@ -30,12 +32,37 @@ class OrderService {
   }
 
   #parseOrders(orders) {
+    this.#validateOrders(orders);
+
     return orders
       .split(OrderService.#orderSeparator)
       .map((order) => this.#parseMenu(order));
   }
 
+  #validateOrders(orders) {
+    const isValid = Validator.isValidArray({
+      value: orders,
+      separator: OrderService.#orderSeparator,
+    });
+
+    if (!isValid)
+      throw CustomError.orderService(ERROR.message.order.invalidOrder);
+  }
+
+  #validateMenu(menu) {
+    const isValid = Validator.isValidArray({
+      value: menu,
+      separator: OrderService.#menuSeparator,
+      length: OrderService.#menuFormLength,
+    });
+
+    if (!isValid)
+      throw CustomError.orderService(ERROR.message.order.invalidOrder);
+  }
+
   #parseMenu(menu) {
+    this.#validateMenu(menu);
+
     const [menuName, quantity] = menu.split(OrderService.#menuSeparator);
     const parsedCount = Number(quantity);
 
@@ -49,7 +76,7 @@ class OrderService {
     }, 0);
   }
 
-  #validateOrders(parsedOrders) {
+  #validateParsedOrders(parsedOrders) {
     const orderedMenus = parsedOrders.map(({ menuName }) => menuName);
     if (new Set(orderedMenus).size !== orderedMenus.length) {
       throw CustomError.orderService(ERROR.message.order.duplicatedOrder);

@@ -54,30 +54,14 @@ const InputView = {
       !Validator.isPositiveInteger(date) ||
       !Validator.isInRange(date, Calander.initialDay, Calander.getLastDay())
     ) {
-      throw CustomError.inputView(ERROR.message.invalidDate);
+      throw CustomError.inputView(ERROR.message.date.invalidDate);
     }
   },
 
   async readOrder() {
     const userInput = await Console.readLineAsync(MESSAGE.read.order);
-    this.validateOrderForm(userInput);
 
     return userInput;
-  },
-
-  // FIXME: 이 친구들도 OrderService 완성되면 이동하기.
-  validateOrderForm(order) {
-    if (!Validator.isValidArray({ value: order, separator: ',' })) {
-      throw CustomError.inputView(ERROR.message.invalidOrder);
-    }
-
-    order.split(',').forEach(this.validateMenuForm.bind(this));
-  },
-
-  validateMenuForm(menu) {
-    if (!Validator.isValidArray({ value: menu, separator: '-', length: 2 })) {
-      throw CustomError.inputView(ERROR.message.invalidOrder);
-    }
   },
 };
 
