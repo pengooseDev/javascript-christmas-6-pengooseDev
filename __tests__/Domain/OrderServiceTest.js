@@ -1,12 +1,12 @@
 import OrderService from '../../src/Domain/OrderService.js';
-import DEFAULT_MENUS from '../../src/constants/menu.js';
+import MENU from '../../src/constants/menu.js';
 import ERROR from '../../src/constants/error.js';
 
 describe('OrderService 테스트', () => {
   let orderServiceInstance;
 
   beforeEach(() => {
-    orderServiceInstance = new OrderService(DEFAULT_MENUS);
+    orderServiceInstance = new OrderService(MENU.defaultMenus);
   });
 
   describe('getBill 메서드는 주문에 대한 계산을 수행한다.', () => {
@@ -17,21 +17,15 @@ describe('OrderService 테스트', () => {
         expected: {
           orderedMenus: [
             {
-              menu: {
-                price: 35000,
-              },
+              price: 35000,
               quantity: 2,
             },
             {
-              menu: {
-                price: 60000,
-              },
+              price: 60000,
               quantity: 1,
             },
             {
-              menu: {
-                price: 15000,
-              },
+              price: 15000,
               quantity: 1,
             },
           ],
@@ -43,21 +37,15 @@ describe('OrderService 테스트', () => {
         expected: {
           orderedMenus: [
             {
-              menu: {
-                price: 6000,
-              },
+              price: 6000,
               quantity: 3,
             },
             {
-              menu: {
-                price: 5500,
-              },
+              price: 5500,
               quantity: 4,
             },
             {
-              menu: {
-                price: 5000,
-              },
+              price: 5000,
               quantity: 1,
             },
           ],

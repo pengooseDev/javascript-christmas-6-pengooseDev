@@ -1,64 +1,73 @@
-const DEFAULT_MENUS = [
+const category = Object.freeze({
+  appitizer: '애피타이저',
+  main: '메인',
+  dessert: '디저트',
+  drink: '음료',
+});
+
+const defaultMenus = [
   {
-    category: '애피타이저',
+    category: category.appitizer,
     name: '양송이수프',
     price: 6000,
   },
   {
-    category: '애피타이저',
+    category: category.appitizer,
     name: '타파스',
     price: 5500,
   },
   {
-    category: '애피타이저',
+    category: category.appitizer,
     name: '시저샐러드',
     price: 5000,
   },
   {
-    category: '메인',
+    category: category.main,
     name: '티본스테이크',
     price: 55000,
   },
   {
-    category: '메인',
+    category: category.main,
     name: '바비큐립',
     price: 54000,
   },
   {
-    category: '메인',
+    category: category.main,
     name: '해산물파스타',
     price: 35000,
   },
   {
-    category: '메인',
+    category: category.main,
     name: '크리스마스파스타',
     price: 25000,
   },
   {
-    category: '디저트',
+    category: category.dessert,
     name: '초코케이크',
     price: 15000,
   },
   {
-    category: '디저트',
+    category: category.dessert,
     name: '아이스크림',
     price: 5000,
   },
   {
-    category: '음료',
+    category: category.drink,
     name: '제로콜라',
     price: 3000,
   },
   {
-    category: '음료',
+    category: category.drink,
     name: '레드와인',
     price: 60000,
   },
   {
-    category: '음료',
+    category: category.drink,
     name: '샴페인',
     price: 25000,
   },
 ];
 
-export default DEFAULT_MENUS;
+const MENU = Object.freeze({ category, defaultMenus });
+
+export default MENU;

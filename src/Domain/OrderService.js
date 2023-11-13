@@ -1,6 +1,6 @@
 import MenuBoard from '../Model/MenuBoard.js';
 import ERROR from '../constants/error.js';
-import DEFAULT_MENUS from '../constants/menu.js';
+import MENU from '../constants/menu.js';
 import CustomError from '../errors/error.js';
 import Validator from '../utils/Validator.js';
 
@@ -13,25 +13,31 @@ class OrderService {
 
   #menuBoard;
 
-  constructor(menus = DEFAULT_MENUS) {
+  constructor(menus = MENU.defaultMenus) {
     this.#menuBoard = new MenuBoard(menus);
   }
 
   getBill(orders) {
     const parsedOrders = this.#parseOrders(orders);
     this.#validateParsedOrders(parsedOrders);
-
     const orderedMenus = this.#getOrderedMenus(parsedOrders);
-    const totalPrice = this.#getTotalPrice(parsedOrders);
+    const totalPrice = this.#getTotalPrice(orderedMenus);
 
     return { orderedMenus, totalPrice };
+  }
+
+  #getTotalPrice(orderedMenus) {
+    return orderedMenus.reduce(
+      (totalPrice, { price, quantity }) => totalPrice + price * quantity,
+      0,
+    );
   }
 
   #getOrderedMenus(parsedOrders) {
     return parsedOrders.map(({ menuName, quantity }) => {
       const menu = this.#menuBoard.selectMenu(menuName);
 
-      return { menu, quantity };
+      return { ...menu, quantity };
     });
   }
 
@@ -73,21 +79,29 @@ class OrderService {
     return { menuName, quantity: parsedCount };
   }
 
-  #getTotalPrice(parsedOrders) {
-    return parsedOrders.reduce((acc, { menuName, quantity }) => {
-      const { price } = this.#menuBoard.selectMenu(menuName);
-
-      return acc + price * quantity;
-    }, 0);
+  #validateParsedOrders(parsedOrders) {
+    this.#validateMenus(parsedOrders);
+    parsedOrders.forEach(({ quantity }) => this.#validateQuantity(quantity));
+    // TODO: 주문한 카테고리들을 반환하는 메서드를 추가한다. 음료만 주문 시, 주문할 수 없습니다.
+    // TODO: 메뉴는 한 번에 최대 20개까지(quatity의 최대합은 20개)만 주문할 수 있습니다.
   }
 
-  #validateParsedOrders(parsedOrders) {
-    const orderedMenus = parsedOrders.map(({ menuName }) => menuName);
-    if (new Set(orderedMenus).size !== orderedMenus.length) {
+  #validateMenus(orderedMenus) {
+    const menuNames = orderedMenus.map(({ menuName }) => menuName);
+
+    this.#validateDuplicatedOrder(menuNames);
+  }
+
+  #validateDuplicatedOrder(menuNames) {
+    if (new Set(menuNames).size !== menuNames.length) {
       throw CustomError.orderService(ERROR.message.order.duplicatedOrder);
     }
+  }
 
-    parsedOrders.forEach(({ quantity }) => this.#validateQuantity(quantity));
+  #validateDessertOnly(menuNames) {
+    if (menuNames.every((menuName) => this.#menuBoard.isMain(menuName))) {
+      throw CustomError.orderService(ERROR.message.order.dessertOnly);
+    }
   }
 
   #validateQuantity(quantity) {

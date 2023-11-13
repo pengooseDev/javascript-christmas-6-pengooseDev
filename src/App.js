@@ -1,11 +1,11 @@
 import View from './View/View.js';
 import Calander from './Model/Calendar.js';
 import OrderService from './Domain/OrderService.js';
-import DEFAULT_MENUS from './constants/menu.js';
+import MENU from './constants/menu.js';
 import PromotionService from './Domain/PromotionSerivce.js';
 
 class App {
-  #orderService = new OrderService(DEFAULT_MENUS);
+  #orderService = new OrderService(MENU.defaultMenus);
 
   #promotionService;
 
