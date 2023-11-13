@@ -52,6 +52,7 @@ class PromotionService {
     });
   }
 
+  // FIXME: 총 구매액이 아닌 총혜택으로 확인해야함.
   #setBadgePromotion({ month, endDay, totalPrice }) {
     this.#addPromotion({
       month,
@@ -114,10 +115,6 @@ class PromotionService {
     );
 
     return dessertMenus;
-  }
-
-  #countCategory(categories, categoryType) {
-    return categories.filter((category) => category === categoryType).length;
   }
 
   #setWeekDiscount({ bill, month, endDay }) {

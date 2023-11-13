@@ -11,8 +11,8 @@ const promotionName = Object.freeze({
   weekday: '평일 할인',
   weekend: '주말 할인',
   special: '특별 할인',
-  badge: '할인 뱃지',
   serviceMenu: '증정 이벤트',
+  badge: '이벤트 배지',
 });
 
 const billThreshold = Object.freeze({
