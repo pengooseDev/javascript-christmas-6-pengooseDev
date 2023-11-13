@@ -1,3 +1,5 @@
+import CHRISTMAS_PROMOTION from '../constants/christmasPromotion.js';
+
 class Promotion {
   static promotionType = Object.freeze({
     discount: 'discount',
@@ -5,14 +7,6 @@ class Promotion {
     mainDiscount: 'mainDiscount',
     serviceMenu: 'serviceMenu',
     badge: 'badge',
-  });
-
-  static #date = Object.freeze({
-    christmas: 1_000,
-    christmasDdayUnit: 100,
-    weekday: 2_023,
-    weekend: 2_023,
-    special: 1_000,
   });
 
   static #billThreshold = Object.freeze({
@@ -30,42 +24,48 @@ class Promotion {
 
   static createChristmasDiscount(day) {
     const discount =
-      this.#date.christmas + this.#date.christmasDdayUnit * (day - 1);
+      CHRISTMAS_PROMOTION.dateDiscount.christmasDefault +
+      CHRISTMAS_PROMOTION.dateDiscount.christmasDdayUnit * (day - 1);
     return new Promotion({
-      promotionName: '크리스마스 디데이 할인',
       promotionType: this.promotionType.discount,
+      promotionName: CHRISTMAS_PROMOTION.promotionName.christmas,
       reward: discount,
     });
   }
 
+  // FIXME: 메뉴가 메인메뉴인 것만 골라서 모든 메인메뉴만 중복할인
   static createWeekdayDiscount() {
     return new Promotion({
-      promotionName: '평일 할인',
       promotionType: this.promotionType.dessertDiscount,
-      reward: this.#date.weekday,
+      promotionName: CHRISTMAS_PROMOTION.promotionName.weekday,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.weekday,
     });
   }
 
+  // FIXME: 메뉴가 메인메뉴인 것만 골라서 모든 디저트메뉴만 중복할인
   static createWeekendDiscount() {
     return new Promotion({
-      promotionName: '주말 할인',
       promotionType: this.promotionType.mainDiscount,
-      reward: this.#date.weekend,
+      promotionName: CHRISTMAS_PROMOTION.promotionName.weekend,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.weekend,
     });
   }
 
   static createSpecialDiscount() {
     return new Promotion({
-      promotionName: '특별 할인',
       promotionType: this.promotionType.discount,
-      reward: this.#date.special,
+      promotionName: CHRISTMAS_PROMOTION.promotionName.special,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.special,
     });
   }
 
   static #checkBadge(totalPrice) {
-    if (totalPrice >= this.#billThreshold.santa) return '산타';
-    if (totalPrice >= this.#billThreshold.tree) return '트리';
-    if (totalPrice >= this.#billThreshold.star) return '별';
+    if (totalPrice >= CHRISTMAS_PROMOTION.billThreshold.santa)
+      return CHRISTMAS_PROMOTION.badge.santa;
+    if (totalPrice >= CHRISTMAS_PROMOTION.billThreshold.tree)
+      return CHRISTMAS_PROMOTION.badge.tree;
+    if (totalPrice >= CHRISTMAS_PROMOTION.billThreshold.star)
+      return CHRISTMAS_PROMOTION.badge.star;
 
     return null;
   }
@@ -75,8 +75,8 @@ class Promotion {
     if (!badge) return null;
 
     return new Promotion({
-      promotionName: '할인 배지',
       promotionType: this.promotionType.badge,
+      promotionName: CHRISTMAS_PROMOTION.promotionName.badge,
       reward: badge,
     });
   }
@@ -85,9 +85,9 @@ class Promotion {
     if (totalPrice < this.#billThreshold.totalPrice) return null;
 
     return new Promotion({
-      promotionName: '증정 이벤트',
+      promotionName: CHRISTMAS_PROMOTION.promotionName.serviceMenu,
       promotionType: this.promotionType.serviceMenu,
-      reward: '샴페인', // TODO: Menu에서 매핑하여 가격 가져와야 함.
+      reward: CHRISTMAS_PROMOTION.serviceMenu,
     });
   }
 }

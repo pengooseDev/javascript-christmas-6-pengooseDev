@@ -1,4 +1,4 @@
-const defaultMenus = [
+const DEFAULT_MENUS = [
   {
     category: '애피타이저',
     name: '양송이수프',
@@ -61,4 +61,4 @@ const defaultMenus = [
   },
 ];
 
-export default defaultMenus;
+export default DEFAULT_MENUS;

@@ -1,11 +1,11 @@
 import View from './View/View.js';
 import Calander from './Model/Calendar.js';
 import OrderService from './Domain/OrderService.js';
-import defaultMenus from './constants/menu.js';
+import DEFAULT_MENUS from './constants/menu.js';
 import PromotionService from './Domain/PromotionSerivce.js';
 
 class App {
-  #orderService = new OrderService(defaultMenus);
+  #orderService = new OrderService(DEFAULT_MENUS);
 
   #promotionService;
 
@@ -15,8 +15,6 @@ class App {
     const reservationDate = await this.#reservationProcess();
     const bill = await this.#reboundOnError(() => this.#orderProcess());
     const promotions = this.#promotionProcess({ reservationDate, bill });
-
-    console.log(promotions);
   }
 
   /**

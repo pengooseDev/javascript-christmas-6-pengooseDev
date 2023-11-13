@@ -5,7 +5,7 @@ class PromotionService {
   #promotions = {};
 
   constructor({ month, totalPrice }) {
-    this.#setDatePromotionEvents(month);
+    this.#setDatePromotionEvents(month); // FIXME: 1. bill 넘겨야함.
     this.#setBillPromotionEvents({ month, totalPrice });
   }
 
@@ -17,39 +17,40 @@ class PromotionService {
     return this.#promotions[month][date] || [];
   }
 
+  // FIXME: 2. bill 넘겨야함.
   #setDatePromotionEvents(month) {
     this.#promotions[month] = this.#promotions[month] || {};
 
-    this.#setChristmasDiscount({ month, lastDay: 25 });
-    this.#setSpecialDiscount({ month, lastDay: 25 });
-    this.#setWeekDiscount({ month, lastDay: 25 });
+    this.#setChristmasDiscount({ month, endDay: 25 });
+    this.#setSpecialDiscount({ month, endDay: 31 });
+    this.#setWeekDiscount({ month, endDay: 31 }); // FIXME: 3. bill 넘겨야함.
   }
 
   #setBillPromotionEvents({ month, totalPrice }) {
     this.#promotions[month] = this.#promotions[month] || {};
 
-    this.#setServiceMenuPromotion({ month, lastDay: 25, totalPrice });
-    this.#setBadgePromotion({ month, lastDay: 25, totalPrice });
+    this.#setServiceMenuPromotion({ month, endDay: 31, totalPrice });
+    this.#setBadgePromotion({ month, endDay: 31, totalPrice });
   }
 
-  #setServiceMenuPromotion({ month, lastDay, totalPrice }) {
+  #setServiceMenuPromotion({ month, endDay, totalPrice }) {
     this.#addPromotion({
       month,
-      lastDay,
+      endDay,
       option: () => Promotion.createServiceMenu(totalPrice),
     });
   }
 
-  #setBadgePromotion({ month, lastDay, totalPrice }) {
+  #setBadgePromotion({ month, endDay, totalPrice }) {
     this.#addPromotion({
       month,
-      lastDay,
+      endDay,
       option: () => Promotion.createBadge(totalPrice),
     });
   }
 
-  #addPromotion({ month, lastDay, option }) {
-    Array.from({ length: lastDay }, (_, index) => index + 1).forEach((day) => {
+  #addPromotion({ month, endDay, option }) {
+    Array.from({ length: endDay }, (_, index) => index + 1).forEach((day) => {
       const promotion = option(month, day);
 
       if (promotion) {
@@ -59,18 +60,18 @@ class PromotionService {
     });
   }
 
-  #setChristmasDiscount({ month, lastDay }) {
+  #setChristmasDiscount({ month, endDay }) {
     this.#addPromotion({
       month,
-      lastDay,
+      endDay,
       option: (_, day) => Promotion.createChristmasDiscount(day),
     });
   }
 
-  #setSpecialDiscount({ month, lastDay }) {
+  #setSpecialDiscount({ month, endDay }) {
     this.#addPromotion({
       month,
-      lastDay,
+      endDay,
       option: (m, d) =>
         Calendar.isSunday(m, d) || Calendar.isChristmas(m, d)
           ? Promotion.createSpecialDiscount()
@@ -78,16 +79,18 @@ class PromotionService {
     });
   }
 
+  // FIXME: 5. bill 넘겨야함.
   #getWeekDiscountPromotion(month, day) {
     return Calendar.isWeekend(month, day)
       ? Promotion.createWeekendDiscount()
       : Promotion.createWeekdayDiscount();
   }
 
-  #setWeekDiscount({ month, lastDay }) {
+  #setWeekDiscount({ month, endDay }) {
     this.#addPromotion({
       month,
-      lastDay,
+      endDay,
+      // FIXME: 4. bill 넘겨야함.
       option: (m, d) => this.#getWeekDiscountPromotion(m, d),
     });
   }

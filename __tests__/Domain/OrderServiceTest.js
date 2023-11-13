@@ -1,12 +1,12 @@
 import OrderService from '../../src/Domain/OrderService.js';
-import defaultMenus from '../../src/constants/menu.js';
+import DEFAULT_MENUS from '../../src/constants/menu.js';
 import ERROR from '../../src/constants/error.js';
 
 describe('OrderService 테스트', () => {
   let orderServiceInstance;
 
   beforeEach(() => {
-    orderServiceInstance = new OrderService(defaultMenus);
+    orderServiceInstance = new OrderService(DEFAULT_MENUS);
   });
 
   describe('getBill 메서드는 주문에 대한 계산을 수행한다.', () => {

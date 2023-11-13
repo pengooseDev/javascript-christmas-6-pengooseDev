@@ -1,6 +1,6 @@
 import MenuBoard from '../Model/MenuBoard.js';
 import ERROR from '../constants/error.js';
-import defaultMenus from '../constants/menu.js';
+import DEFAULT_MENUS from '../constants/menu.js';
 import CustomError from '../errors/error.js';
 import Validator from '../utils/Validator.js';
 
@@ -13,7 +13,7 @@ class OrderService {
 
   #menuBoard;
 
-  constructor(menus = defaultMenus) {
+  constructor(menus = DEFAULT_MENUS) {
     this.#menuBoard = new MenuBoard(menus);
   }
 
