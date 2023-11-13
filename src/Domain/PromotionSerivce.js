@@ -1,11 +1,14 @@
 import Calendar from '../Model/Calendar.js';
 import Promotion from '../Model/Promotion.js';
+import CHRISTMAS_PROMOTION from '../constants/christmasPromotion.js';
 import MENU from '../constants/menu.js';
 
 class PromotionService {
   #promotions = {};
 
   constructor({ month, totalPrice, bill }) {
+    if (CHRISTMAS_PROMOTION.threshold.minOrderPrice > totalPrice) return;
+
     this.#setDatePromotionEvents({ month, bill });
     this.#setBillPromotionEvents({ month, totalPrice });
   }
@@ -19,6 +22,8 @@ class PromotionService {
   }
 
   #checkPromotions(month, date) {
+    if (!this.#promotions[month]) return [];
+
     return this.#promotions[month][date] || [];
   }
 

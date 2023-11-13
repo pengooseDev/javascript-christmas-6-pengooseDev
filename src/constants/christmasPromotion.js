@@ -16,6 +16,7 @@ const promotionName = Object.freeze({
 });
 
 const threshold = Object.freeze({
+  minOrderPrice: 10_000,
   totalPrice: 120_000,
   santa: 20_000,
   tree: 10_000,
