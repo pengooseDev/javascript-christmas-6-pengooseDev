@@ -1,11 +1,12 @@
 import Calendar from '../Model/Calendar.js';
 import Promotion from '../Model/Promotion.js';
+import MENU from '../constants/menu.js';
 
 class PromotionService {
   #promotions = {};
 
-  constructor({ month, totalPrice }) {
-    this.#setDatePromotionEvents(month); // FIXME: 1. bill 넘겨야함.
+  constructor({ month, totalPrice, bill }) {
+    this.#setDatePromotionEvents({ month, bill });
     this.#setBillPromotionEvents({ month, totalPrice });
   }
 
@@ -17,13 +18,12 @@ class PromotionService {
     return this.#promotions[month][date] || [];
   }
 
-  // FIXME: 2. bill 넘겨야함.
-  #setDatePromotionEvents(month) {
+  #setDatePromotionEvents({ month, bill }) {
     this.#promotions[month] = this.#promotions[month] || {};
 
     this.#setChristmasDiscount({ month, endDay: 25 });
     this.#setSpecialDiscount({ month, endDay: 31 });
-    this.#setWeekDiscount({ month, endDay: 31 }); // FIXME: 3. bill 넘겨야함.
+    this.#setWeekDiscount({ bill, month, endDay: 31 });
   }
 
   #setBillPromotionEvents({ month, totalPrice }) {
@@ -31,6 +31,17 @@ class PromotionService {
 
     this.#setServiceMenuPromotion({ month, endDay: 31, totalPrice });
     this.#setBadgePromotion({ month, endDay: 31, totalPrice });
+  }
+
+  #addPromotion({ month, endDay, option }) {
+    Array.from({ length: endDay }, (_, index) => index + 1).forEach((day) => {
+      const promotion = option(month, day);
+
+      if (promotion) {
+        this.#promotions[month][day] = this.#promotions[month][day] || [];
+        this.#promotions[month][day].push(promotion);
+      }
+    });
   }
 
   #setServiceMenuPromotion({ month, endDay, totalPrice }) {
@@ -46,17 +57,6 @@ class PromotionService {
       month,
       endDay,
       option: () => Promotion.createBadge(totalPrice),
-    });
-  }
-
-  #addPromotion({ month, endDay, option }) {
-    Array.from({ length: endDay }, (_, index) => index + 1).forEach((day) => {
-      const promotion = option(month, day);
-
-      if (promotion) {
-        this.#promotions[month][day] = this.#promotions[month][day] || [];
-        this.#promotions[month][day].push(promotion);
-      }
     });
   }
 
@@ -79,19 +79,53 @@ class PromotionService {
     });
   }
 
-  // FIXME: 5. bill 넘겨야함.
-  #getWeekDiscountPromotion(month, day) {
+  #getWeekDiscountPromotion({ month, day, bill }) {
+    const { mainQuantity, dessertQuantity } = this.#getCategoryQuantity(bill);
+
     return Calendar.isWeekend(month, day)
-      ? Promotion.createWeekendDiscount()
-      : Promotion.createWeekdayDiscount();
+      ? Promotion.createWeekendDiscount(mainQuantity)
+      : Promotion.createWeekdayDiscount(dessertQuantity);
   }
 
-  #setWeekDiscount({ month, endDay }) {
+  #getCategoryQuantity(bill) {
+    const mainQuantity = this.#getMainQuantity(bill);
+    const dessertQuantity = this.#getDessertQuatity(bill);
+
+    return { mainQuantity, dessertQuantity };
+  }
+
+  #getMainQuantity(bill) {
+    const mainMenus = bill.orderedMenus.reduce(
+      (acc, { category, quantity }) => {
+        return category === MENU.category.main ? acc + quantity : acc;
+      },
+      0,
+    );
+
+    return mainMenus;
+  }
+
+  #getDessertQuatity(bill) {
+    const dessertMenus = bill.orderedMenus.reduce(
+      (acc, { category, quantity }) => {
+        return category === MENU.category.dessert ? acc + quantity : acc;
+      },
+      0,
+    );
+
+    return dessertMenus;
+  }
+
+  #countCategory(categories, categoryType) {
+    return categories.filter((category) => category === categoryType).length;
+  }
+
+  #setWeekDiscount({ bill, month, endDay }) {
     this.#addPromotion({
       month,
       endDay,
-      // FIXME: 4. bill 넘겨야함.
-      option: (m, d) => this.#getWeekDiscountPromotion(m, d),
+      option: (m, d) =>
+        this.#getWeekDiscountPromotion({ month: m, day: d, bill }),
     });
   }
 }

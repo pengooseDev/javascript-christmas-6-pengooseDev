@@ -49,11 +49,10 @@ class App {
   #promotionProcess({ reservationDate, bill }) {
     const { month, date } = reservationDate;
     const { totalPrice } = bill;
-    this.#promotionService = new PromotionService({ month, totalPrice });
+    this.#promotionService = new PromotionService({ month, totalPrice, bill });
     return this.#promotionService.getPromotion({
       month,
       date,
-      bill,
     });
   }
 }

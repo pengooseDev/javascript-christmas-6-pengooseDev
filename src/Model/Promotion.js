@@ -9,13 +9,6 @@ class Promotion {
     badge: 'badge',
   });
 
-  static #billThreshold = Object.freeze({
-    totalPrice: 120_000,
-    santa: 20_000,
-    tree: 10_000,
-    star: 5_000,
-  });
-
   constructor({ promotionName, reward, promotionType }) {
     this.promotionName = promotionName;
     this.promotionType = promotionType;
@@ -33,21 +26,19 @@ class Promotion {
     });
   }
 
-  // FIXME: 메뉴가 메인메뉴인 것만 골라서 모든 메인메뉴만 중복할인
-  static createWeekdayDiscount() {
+  static createWeekdayDiscount(quatity) {
     return new Promotion({
       promotionType: this.promotionType.dessertDiscount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.weekday,
-      reward: CHRISTMAS_PROMOTION.dateDiscount.weekday,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.weekday * quatity,
     });
   }
 
-  // FIXME: 메뉴가 메인메뉴인 것만 골라서 모든 디저트메뉴만 중복할인
-  static createWeekendDiscount() {
+  static createWeekendDiscount(quatity) {
     return new Promotion({
       promotionType: this.promotionType.mainDiscount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.weekend,
-      reward: CHRISTMAS_PROMOTION.dateDiscount.weekend,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.weekend * quatity,
     });
   }
 
@@ -82,11 +73,11 @@ class Promotion {
   }
 
   static createServiceMenu(totalPrice) {
-    if (totalPrice < this.#billThreshold.totalPrice) return null;
+    if (totalPrice < CHRISTMAS_PROMOTION.billThreshold.totalPrice) return null;
 
     return new Promotion({
-      promotionName: CHRISTMAS_PROMOTION.promotionName.serviceMenu,
       promotionType: this.promotionType.serviceMenu,
+      promotionName: CHRISTMAS_PROMOTION.promotionName.serviceMenu,
       reward: CHRISTMAS_PROMOTION.serviceMenu,
     });
   }
