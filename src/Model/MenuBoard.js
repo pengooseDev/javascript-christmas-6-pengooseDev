@@ -14,26 +14,28 @@ class MenuBoard {
     });
   }
 
-  static isMainMenu(menuName) {
-    const category = this.getCategory(menuName);
+  isMainMenu(name) {
+    const category = this.getCategory(name);
 
     return category === MENU.category.main;
   }
 
-  static isDessertMenu(menuName) {
-    const category = this.getCategory(menuName);
+  isDessertMenu(name) {
+    const category = this.getCategory(name);
 
     return category === MENU.category.dessert;
   }
 
-  static isDrinkMenu(menuName) {
-    const category = this.getCategory(menuName);
+  isDrinkMenu(name) {
+    const category = this.getCategory(name);
 
     return category === MENU.category.drink;
   }
 
-  getCategory(menuName) {
-    const { category } = this.#menus.get(menuName);
+  getCategory(name) {
+    this.#checkMenuExistence(name);
+
+    const { category } = this.#menus.get(name);
 
     return category;
   }

@@ -42,14 +42,14 @@ class OrderService {
   }
 
   #parseOrders(orders) {
-    this.#validateOrders(orders);
+    this.#validateOrdersForm(orders);
 
     return orders
       .split(OrderService.#orderSeparator)
       .map((order) => this.#parseMenu(order));
   }
 
-  #validateOrders(orders) {
+  #validateOrdersForm(orders) {
     const isValid = Validator.isValidArray({
       value: orders,
       separator: OrderService.#orderSeparator,
@@ -59,7 +59,7 @@ class OrderService {
       throw CustomError.orderService(ERROR.message.order.invalidOrder);
   }
 
-  #validateMenu(menu) {
+  #validateMenuForm(menu) {
     const isValid = Validator.isValidArray({
       value: menu,
       separator: OrderService.#menuSeparator,
@@ -71,7 +71,7 @@ class OrderService {
   }
 
   #parseMenu(menu) {
-    this.#validateMenu(menu);
+    this.#validateMenuForm(menu);
 
     const [menuName, quantity] = menu.split(OrderService.#menuSeparator);
     const parsedCount = Number(quantity);
@@ -82,14 +82,25 @@ class OrderService {
   #validateParsedOrders(parsedOrders) {
     this.#validateMenus(parsedOrders);
     parsedOrders.forEach(({ quantity }) => this.#validateQuantity(quantity));
-    // TODO: 주문한 카테고리들을 반환하는 메서드를 추가한다. 음료만 주문 시, 주문할 수 없습니다.
-    // TODO: 메뉴는 한 번에 최대 20개까지(quatity의 최대합은 20개)만 주문할 수 있습니다.
+    this.#validateTotalQuantity(parsedOrders);
+  }
+
+  #validateTotalQuantity(parsedOrders) {
+    const totalQuantity = parsedOrders.reduce(
+      (acc, { quantity }) => acc + quantity,
+      0,
+    );
+
+    if (totalQuantity > MENU.threshold.quatity) {
+      throw CustomError.orderService(ERROR.message.order.invalidQuantity);
+    }
   }
 
   #validateMenus(orderedMenus) {
     const menuNames = orderedMenus.map(({ menuName }) => menuName);
 
     this.#validateDuplicatedOrder(menuNames);
+    this.#validateOnlyDrink(menuNames);
   }
 
   #validateDuplicatedOrder(menuNames) {
@@ -98,9 +109,13 @@ class OrderService {
     }
   }
 
-  #validateDessertOnly(menuNames) {
-    if (menuNames.every((menuName) => this.#menuBoard.isMain(menuName))) {
-      throw CustomError.orderService(ERROR.message.order.dessertOnly);
+  #validateOnlyDrink(menuNames) {
+    const drinkCount = menuNames.filter((name) => {
+      return MENU.category.drink === this.#menuBoard.getCategory(name);
+    }).length;
+
+    if (drinkCount === menuNames.length) {
+      throw CustomError.orderService(ERROR.message.order.onlyDrink);
     }
   }
 

@@ -5,6 +5,10 @@ const category = Object.freeze({
   drink: '음료',
 });
 
+const threshold = Object.freeze({
+  quatity: 20,
+});
+
 const defaultMenus = [
   {
     category: category.appitizer,
@@ -68,6 +72,6 @@ const defaultMenus = [
   },
 ];
 
-const MENU = Object.freeze({ category, defaultMenus });
+const MENU = Object.freeze({ category, defaultMenus, threshold });
 
 export default MENU;

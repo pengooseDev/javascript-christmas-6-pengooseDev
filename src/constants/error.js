@@ -17,6 +17,7 @@ const order = Object.freeze({
   invalidOrder: '유효하지 않은 주문입니다.',
   invalidQuantity: '유효하지 않은 주문입니다.',
   duplicatedOrder: '유효하지 않은 주문입니다.',
+  onlyDrink: '음료만 주문할 수 없습니다.',
 });
 
 const calendar = Object.freeze({
