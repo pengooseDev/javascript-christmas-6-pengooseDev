@@ -11,11 +11,30 @@ class PromotionService {
   }
 
   getPromotion({ month, date }) {
-    return this.#checkPromotions(month, date);
+    const promotions = this.#checkPromotions(month, date);
+    const totalDiscount = this.#getTotalDiscount(promotions);
+    const badge = this.#getBadgePromotion(totalDiscount);
+
+    return { promotions, totalDiscount, badge };
   }
 
   #checkPromotions(month, date) {
     return this.#promotions[month][date] || [];
+  }
+
+  #getTotalDiscount(promotions) {
+    return promotions.reduce((acc, { promotionType, reward }) => {
+      if (promotionType === Promotion.promotionType.discount)
+        return acc + reward;
+      if (promotionType === Promotion.promotionType.serviceMenu)
+        return acc + reward.value;
+
+      return acc;
+    }, 0);
+  }
+
+  #getBadgePromotion(totalDiscount) {
+    return Promotion.createBadge(totalDiscount);
   }
 
   #setDatePromotionEvents({ month, bill }) {
@@ -30,7 +49,6 @@ class PromotionService {
     this.#promotions[month] = this.#promotions[month] || {};
 
     this.#setServiceMenuPromotion({ month, endDay: 31, totalPrice });
-    this.#setBadgePromotion({ month, endDay: 31, totalPrice });
   }
 
   #addPromotion({ month, endDay, option }) {
@@ -49,15 +67,6 @@ class PromotionService {
       month,
       endDay,
       option: () => Promotion.createServiceMenu(totalPrice),
-    });
-  }
-
-  // FIXME: 총 구매액이 아닌 총혜택으로 확인해야함.
-  #setBadgePromotion({ month, endDay, totalPrice }) {
-    this.#addPromotion({
-      month,
-      endDay,
-      option: () => Promotion.createBadge(totalPrice),
     });
   }
 

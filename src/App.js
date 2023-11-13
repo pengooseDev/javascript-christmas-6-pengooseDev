@@ -15,6 +15,8 @@ class App {
     const reservationDate = await this.#reservationProcess();
     const bill = await this.#reboundOnError(() => this.#orderProcess());
     const promotions = this.#promotionProcess({ reservationDate, bill });
+
+    console.log(promotions);
   }
 
   /**

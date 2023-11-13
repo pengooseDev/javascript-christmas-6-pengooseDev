@@ -48,19 +48,19 @@ class Promotion {
     });
   }
 
-  static #checkBadge(totalPrice) {
-    if (totalPrice >= CHRISTMAS_PROMOTION.billThreshold.santa)
+  static #checkBadge(totalDiscount) {
+    if (totalDiscount >= CHRISTMAS_PROMOTION.threshold.santa)
       return CHRISTMAS_PROMOTION.badge.santa;
-    if (totalPrice >= CHRISTMAS_PROMOTION.billThreshold.tree)
+    if (totalDiscount >= CHRISTMAS_PROMOTION.threshold.tree)
       return CHRISTMAS_PROMOTION.badge.tree;
-    if (totalPrice >= CHRISTMAS_PROMOTION.billThreshold.star)
+    if (totalDiscount >= CHRISTMAS_PROMOTION.threshold.star)
       return CHRISTMAS_PROMOTION.badge.star;
 
     return null;
   }
 
-  static createBadge(totalPrice) {
-    const badge = this.#checkBadge(totalPrice);
+  static createBadge(totalDiscount) {
+    const badge = this.#checkBadge(totalDiscount);
     if (!badge) return null;
 
     return new Promotion({
@@ -71,7 +71,7 @@ class Promotion {
   }
 
   static createServiceMenu(totalPrice) {
-    if (totalPrice < CHRISTMAS_PROMOTION.billThreshold.totalPrice) return null;
+    if (totalPrice < CHRISTMAS_PROMOTION.threshold.totalPrice) return null;
 
     return new Promotion({
       promotionType: this.promotionType.serviceMenu,

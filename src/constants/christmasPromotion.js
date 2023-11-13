@@ -15,7 +15,7 @@ const promotionName = Object.freeze({
   badge: '이벤트 배지',
 });
 
-const billThreshold = Object.freeze({
+const threshold = Object.freeze({
   totalPrice: 120_000,
   santa: 20_000,
   tree: 10_000,
@@ -28,12 +28,12 @@ const badge = Object.freeze({
   star: '별',
 });
 
-const serviceMenu = '샴페인';
+const serviceMenu = { name: '샴페인', value: 25_000 };
 
 const CHRISTMAS_PROMOTION = Object.freeze({
   dateDiscount,
   promotionName,
-  billThreshold,
+  threshold,
   badge,
   serviceMenu,
 });
