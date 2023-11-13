@@ -1,4 +1,5 @@
 import ERROR from '../constants/error.js';
+import MENU from '../constants/menu.js';
 import CustomError from '../errors/error.js';
 import Validator from '../utils/Validator.js';
 
@@ -11,6 +12,30 @@ class MenuBoard {
     menus.forEach(({ category, name, price }) => {
       this.#menus.set(name, { category, name, price });
     });
+  }
+
+  static isMainMenu(menuName) {
+    const category = this.getCategory(menuName);
+
+    return category === MENU.category.main;
+  }
+
+  static isDessertMenu(menuName) {
+    const category = this.getCategory(menuName);
+
+    return category === MENU.category.dessert;
+  }
+
+  static isDrinkMenu(menuName) {
+    const category = this.getCategory(menuName);
+
+    return category === MENU.category.drink;
+  }
+
+  getCategory(menuName) {
+    const { category } = this.#menus.get(menuName);
+
+    return category;
   }
 
   selectMenu(name) {
