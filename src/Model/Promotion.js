@@ -3,8 +3,6 @@ import CHRISTMAS_PROMOTION from '../constants/christmasPromotion.js';
 class Promotion {
   static promotionType = Object.freeze({
     discount: 'discount',
-    dessertDiscount: 'dessertDiscount',
-    mainDiscount: 'mainDiscount',
     serviceMenu: 'serviceMenu',
     badge: 'badge',
   });
@@ -28,7 +26,7 @@ class Promotion {
 
   static createWeekdayDiscount(quatity) {
     return new Promotion({
-      promotionType: this.promotionType.dessertDiscount,
+      promotionType: this.promotionType.discount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.weekday,
       reward: CHRISTMAS_PROMOTION.dateDiscount.weekday * quatity,
     });
@@ -36,7 +34,7 @@ class Promotion {
 
   static createWeekendDiscount(quatity) {
     return new Promotion({
-      promotionType: this.promotionType.mainDiscount,
+      promotionType: this.promotionType.discount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.weekend,
       reward: CHRISTMAS_PROMOTION.dateDiscount.weekend * quatity,
     });

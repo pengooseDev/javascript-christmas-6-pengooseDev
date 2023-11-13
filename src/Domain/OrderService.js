@@ -92,7 +92,7 @@ class OrderService {
     );
 
     if (totalQuantity > MENU.threshold.quatity) {
-      throw CustomError.orderService(ERROR.message.order.invalidQuantity);
+      throw CustomError.orderService(ERROR.message.order.quantityOverflow);
     }
   }
 

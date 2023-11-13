@@ -143,6 +143,16 @@ describe('OrderService 테스트', () => {
           expectedError: ERROR.message.order.invalidOrder,
           description: '수량 정보가 누락된 경우',
         },
+        {
+          input: '레드와인-4',
+          expectedError: ERROR.message.order.onlyDrink,
+          description: '음료만 주문하는 경우',
+        },
+        {
+          input: '시저샐러드-10,티본스테이크-11',
+          expectedError: ERROR.message.order.quantityOverflow,
+          description: '메뉴가 20개를 초과하는 경우',
+        },
 
         // 아래의 테스트는 MenuBoard의 책임으로, MenuBoardTest에서 이미 테스트를 진행하지만 의존성 확인을 위해 작성.
         {
