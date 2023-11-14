@@ -56,7 +56,7 @@ class View {
     this.#printDiscountedPrice({ bill, promotionData });
     this.#printPromotionBadge({
       month: reservationDate.month,
-      badge: promotionData.badge?.reward,
+      badge: promotionData.badge?.reward || MESSAGE.print.none,
     });
   }
 
