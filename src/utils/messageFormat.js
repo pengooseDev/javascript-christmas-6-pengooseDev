@@ -52,6 +52,12 @@ const MessageFormat = {
 
     return `<총혜택 금액>\n-${formattedPromotion}원\n`;
   },
+
+  discountedPrice(discountedPrice) {
+    const formattedPrice = this.formatMoney(discountedPrice);
+
+    return `<할인 후 예상 결제 금액>\n${formattedPrice}원\n`;
+  },
 };
 
 export default MessageFormat;

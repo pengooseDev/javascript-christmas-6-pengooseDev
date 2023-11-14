@@ -53,8 +53,18 @@ class View {
     this.#printReservationDate(reservationDate);
     this.#printBill(bill);
     this.#printPromotions(promotionData);
-    // this.#printDiscountedPrice({ totalPrice, totalDiscount });
+    this.#printDiscountedPrice({ bill, promotionData });
     // this.#printPromotionBadge(badge);
+  }
+
+  #printDiscountedPrice({ bill, promotionData }) {
+    const { totalPrice } = bill;
+    const { totalDiscount } = promotionData;
+
+    const discountedPrice = totalPrice - totalDiscount;
+    const message = this.#messageFormat.discountedPrice(discountedPrice);
+
+    this.#outputView.print(message);
   }
 
   #printPromotions(promotionData) {
