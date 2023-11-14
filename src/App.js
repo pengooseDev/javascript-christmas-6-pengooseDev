@@ -48,10 +48,13 @@ class App {
     return this.#orderService.getBill(order);
   }
 
+  #setPromotionService({ month, bill }) {
+    this.#promotionService = new PromotionService({ month, bill });
+  }
+
   #promotionProcess({ reservationDate, bill }) {
     const { month, date } = reservationDate;
-    const { totalPrice } = bill;
-    this.#promotionService = new PromotionService({ month, totalPrice, bill });
+    this.#setPromotionService({ month, bill });
 
     return this.#promotionService.getPromotion({
       month,

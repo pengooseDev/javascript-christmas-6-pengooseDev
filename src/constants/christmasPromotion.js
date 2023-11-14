@@ -31,12 +31,15 @@ const badge = Object.freeze({
 
 const serviceMenu = { name: '샴페인', value: 25_000, quantity: 1 };
 
+const endDay = 25;
+
 const CHRISTMAS_PROMOTION = Object.freeze({
   dateDiscount,
   promotionName,
   threshold,
   badge,
   serviceMenu,
+  endDay,
 });
 
 export default CHRISTMAS_PROMOTION;

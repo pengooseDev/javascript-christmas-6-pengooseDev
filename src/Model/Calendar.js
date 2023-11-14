@@ -4,7 +4,7 @@ import Validator from '../utils/Validator.js';
 
 const Calendar = {
   initialDay: 1,
-  lastDay: 31,
+  maxDay: 31,
   initialMonth: 1,
   lastMonth: 12,
   missionMonth: 12,
@@ -38,7 +38,7 @@ const Calendar = {
   validateDay(day) {
     if (
       !Validator.isPositiveInteger(day) ||
-      !Validator.isInRange(day, this.initialDay, this.lastDay)
+      !Validator.isInRange(day, this.initialDay, this.maxDay)
     ) {
       throw CustomError.inputView(ERROR.message.calendar.invalidDay);
     }

@@ -6,11 +6,15 @@ import MENU from '../constants/menu.js';
 class PromotionService {
   #promotions = {};
 
-  constructor({ month, totalPrice, bill }) {
-    if (CHRISTMAS_PROMOTION.threshold.minOrderPrice > totalPrice) return;
+  constructor({ month, bill }) {
+    const { totalPrice } = bill;
 
-    this.#setDatePromotionEvents({ month, bill });
-    this.#setBillPromotionEvents({ month, totalPrice });
+    if (CHRISTMAS_PROMOTION.threshold.minOrderPrice <= totalPrice) {
+      const endDay = Calendar.getLastDay();
+
+      this.#setDatePromotionEvents({ month, endDay, bill });
+      this.#setBillPromotionEvents({ month, endDay, totalPrice });
+    }
   }
 
   getPromotion({ month, date }) {
@@ -52,18 +56,18 @@ class PromotionService {
     return Promotion.createBadge(totalDiscount);
   }
 
-  #setDatePromotionEvents({ month, bill }) {
+  #setDatePromotionEvents({ month, endDay, bill }) {
     this.#promotions[month] = this.#promotions[month] || {};
 
-    this.#setChristmasDiscount({ month, endDay: 25 });
-    this.#setSpecialDiscount({ month, endDay: 31 });
-    this.#setWeekDiscount({ bill, month, endDay: 31 });
+    this.#setChristmasDiscount({ month, endDay: CHRISTMAS_PROMOTION.endDay });
+    this.#setSpecialDiscount({ month, endDay });
+    this.#setWeekDiscount({ bill, month, endDay });
   }
 
-  #setBillPromotionEvents({ month, totalPrice }) {
+  #setBillPromotionEvents({ month, endDay, totalPrice }) {
     this.#promotions[month] = this.#promotions[month] || {};
 
-    this.#setServiceMenuPromotion({ month, endDay: 31, totalPrice });
+    this.#setServiceMenuPromotion({ month, endDay, totalPrice });
   }
 
   #addPromotion({ month, endDay, option }) {
@@ -114,7 +118,7 @@ class PromotionService {
 
   #getCategoryQuantity(bill) {
     const mainQuantity = this.#getMainQuantity(bill);
-    const dessertQuantity = this.#getDessertQuatity(bill);
+    const dessertQuantity = this.#getDessertQuantity(bill);
 
     return { mainQuantity, dessertQuantity };
   }
@@ -130,7 +134,7 @@ class PromotionService {
     return mainMenus;
   }
 
-  #getDessertQuatity(bill) {
+  #getDessertQuantity(bill) {
     const dessertMenus = bill.orderedMenus.reduce(
       (acc, { category, quantity }) => {
         return category === MENU.category.dessert ? acc + quantity : acc;
