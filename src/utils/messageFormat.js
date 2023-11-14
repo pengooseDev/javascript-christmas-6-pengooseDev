@@ -49,8 +49,10 @@ const MessageFormat = {
 
   totalPromotion(totalPromotion) {
     const formattedPromotion = this.formatMoney(totalPromotion);
+    const isZero = totalPromotion === 0;
+    const promotionMessage = isZero ? 0 : `-${formattedPromotion}`;
 
-    return `<총혜택 금액>\n-${formattedPromotion}원\n`;
+    return `<총혜택 금액>\n${promotionMessage}원\n`;
   },
 
   discountedPrice(discountedPrice) {
