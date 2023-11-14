@@ -14,9 +14,9 @@ class App {
   async run() {
     const reservationDate = await this.#reservationProcess();
     const bill = await this.#reboundOnError(() => this.#orderProcess());
-    const promotions = this.#promotionProcess({ reservationDate, bill });
+    const promotionData = this.#promotionProcess({ reservationDate, bill });
 
-    this.#printOrderResult({ reservationDate, bill, promotions });
+    this.#printOrderResult({ reservationDate, bill, promotionData });
   }
 
   /**
@@ -52,16 +52,15 @@ class App {
     const { month, date } = reservationDate;
     const { totalPrice } = bill;
     this.#promotionService = new PromotionService({ month, totalPrice, bill });
+
     return this.#promotionService.getPromotion({
       month,
       date,
     });
   }
 
-  #printOrderResult({ reservationDate, bill, promotions }) {
-    const { month, date } = reservationDate;
-
-    this.#view.printReservationDate({ month, date });
+  #printOrderResult({ reservationDate, bill, promotionData }) {
+    this.#view.printOrderResult({ reservationDate, bill, promotionData });
   }
 }
 

@@ -3,6 +3,10 @@ const MessageFormat = {
     return `[ERROR] ${message}`;
   },
 
+  concatArrayWithEndOfLine(array) {
+    return array.join('\n');
+  },
+
   reboundError(message) {
     return `${message} 다시 입력해 주세요.\n`;
   },
@@ -13,6 +17,14 @@ const MessageFormat = {
 
   reservationDate({ month, date }) {
     return `${month}월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n`;
+  },
+
+  orderMenu({ name, quantity }) {
+    return `${name} ${quantity}개`;
+  },
+
+  orderedMenus(menus) {
+    return `<주문 내역>\n${menus}\n`;
   },
 };
 

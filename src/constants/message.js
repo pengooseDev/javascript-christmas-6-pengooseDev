@@ -5,6 +5,10 @@ const read = Object.freeze({
     '주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)\n',
 });
 
-const MESSAGE = Object.freeze({ read });
+const print = Object.freeze({
+  orderedMenus: '<주문 내역>',
+});
+
+const MESSAGE = Object.freeze({ read, print });
 
 export default MESSAGE;
