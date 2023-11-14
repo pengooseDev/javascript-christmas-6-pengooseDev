@@ -52,7 +52,7 @@ class View {
     const { orderedMenus, totalPrice } = bill;
     const { totalDiscount, totalPromotion, badge } = promotionData;
     this.#printReservationDate({ month, date });
-    this.#printBill(bill);
+    this.#printBill({ orderedMenus, totalPrice });
     // this.#printPromotions(promotionData);
     // this.#printTotalPrice({ totalPrice, totalDiscount });
     // this.#printPromotionBadge(badge);
@@ -64,10 +64,9 @@ class View {
     this.#outputView.print(message);
   }
 
-  #printBill(bill) {
-    const { orderedMenus, totalPrice } = bill;
-
+  #printBill({ orderedMenus, totalPrice }) {
     this.#printOrderedMenus(orderedMenus);
+    this.#printTotalPrice(totalPrice);
   }
 
   #printOrderedMenus(orderedMenus) {
@@ -76,6 +75,12 @@ class View {
     );
     const menuMessage = this.#messageFormat.concatArrayWithEndOfLine(menus);
     const message = this.#messageFormat.orderedMenus(menuMessage);
+
+    this.#outputView.print(message);
+  }
+
+  #printTotalPrice(totalPrice) {
+    const message = this.#messageFormat.totalPrice(totalPrice);
 
     this.#outputView.print(message);
   }

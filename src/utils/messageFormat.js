@@ -26,6 +26,16 @@ const MessageFormat = {
   orderedMenus(menus) {
     return `<주문 내역>\n${menus}\n`;
   },
+
+  formatMoney(money) {
+    return new Intl.NumberFormat('ko-KR').format(money);
+  },
+
+  totalPrice(totalPrice) {
+    const formattedPrice = this.formatMoney(totalPrice);
+
+    return `<할인 전 총주문 금액>\n${formattedPrice}원\n`;
+  },
 };
 
 export default MessageFormat;
