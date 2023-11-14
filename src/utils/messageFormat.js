@@ -19,12 +19,12 @@ const MessageFormat = {
     return `${month}월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n`;
   },
 
-  orderMenu({ name, quantity }) {
+  concatNameWithQuantity({ name, quantity }) {
     return `${name} ${quantity}개`;
   },
 
   orderedMenus(menus) {
-    return `<주문 내역>\n${menus}\n`;
+    return `<주문 메뉴>\n${menus}\n`;
   },
 
   formatMoney(money) {
@@ -35,6 +35,10 @@ const MessageFormat = {
     const formattedPrice = this.formatMoney(totalPrice);
 
     return `<할인 전 총주문 금액>\n${formattedPrice}원\n`;
+  },
+
+  serviceMenu(serviceMessage) {
+    return `<증정 메뉴>\n${serviceMessage}\n`;
   },
 };
 

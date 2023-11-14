@@ -11,7 +11,7 @@ const promotionName = Object.freeze({
   weekday: '평일 할인',
   weekend: '주말 할인',
   special: '특별 할인',
-  serviceMenu: '증정 이벤트',
+  serviceMenu: '증정 메뉴',
   badge: '이벤트 배지',
 });
 
@@ -29,7 +29,7 @@ const badge = Object.freeze({
   star: '별',
 });
 
-const serviceMenu = { name: '샴페인', value: 25_000 };
+const serviceMenu = { name: '샴페인', value: 25_000, quantity: 1 };
 
 const CHRISTMAS_PROMOTION = Object.freeze({
   dateDiscount,

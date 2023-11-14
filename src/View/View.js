@@ -1,3 +1,5 @@
+import Promotion from '../Model/Promotion.js';
+import MESSAGE from '../constants/message.js';
 import MessageFormat from '../utils/messageFormat.js';
 import InputView from './InputView.js';
 import OutputView from './OutputView.js';
@@ -50,9 +52,19 @@ class View {
   printOrderResult({ reservationDate, bill, promotionData }) {
     this.#printReservationDate(reservationDate);
     this.#printBill(bill);
-    // this.#printPromotions(promotionData);
+    this.#printPromotions(promotionData);
     // this.#printTotalPrice({ totalPrice, totalDiscount });
     // this.#printPromotionBadge(badge);
+  }
+
+  #printPromotions(promotionData) {
+    const { promotions, totalDiscount, totalPromotion, badge } = promotionData;
+    const serviceMenus = promotions.filter(
+      ({ promotionType }) =>
+        promotionType === Promotion.promotionType.serviceMenu,
+    );
+
+    this.#printServiceMenu(serviceMenus);
   }
 
   #printReservationDate(reservationDate) {
@@ -71,7 +83,7 @@ class View {
 
   #printOrderedMenus(orderedMenus) {
     const menus = orderedMenus.map(({ name, quantity }) =>
-      this.#messageFormat.orderMenu({ name, quantity }),
+      this.#messageFormat.concatNameWithQuantity({ name, quantity }),
     );
     const menuMessage = this.#messageFormat.concatArrayWithEndOfLine(menus);
     const message = this.#messageFormat.orderedMenus(menuMessage);
@@ -83,6 +95,30 @@ class View {
     const message = this.#messageFormat.totalPrice(totalPrice);
 
     this.#outputView.print(message);
+  }
+
+  #optionalRender({ option, onTrue, onFalse }) {
+    if (!option) return this.#outputView.print(onFalse);
+
+    return this.#outputView.print(onTrue);
+  }
+
+  #printServiceMenu(serviceMenus) {
+    const servicesMessage = this.#parseServiceMenuMessage(serviceMenus);
+
+    this.#optionalRender({
+      option: serviceMenus.length,
+      onTrue: this.#messageFormat.serviceMenu(servicesMessage),
+      onFalse: this.#messageFormat.serviceMenu(MESSAGE.print.none),
+    });
+  }
+
+  #parseServiceMenuMessage(serviceMenus) {
+    const services = serviceMenus.map(({ reward: { name, quantity } }) =>
+      this.#messageFormat.concatNameWithQuantity({ name, quantity }),
+    );
+
+    return this.#messageFormat.concatArrayWithEndOfLine(services);
   }
 }
 

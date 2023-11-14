@@ -6,7 +6,7 @@ const read = Object.freeze({
 });
 
 const print = Object.freeze({
-  orderedMenus: '<주문 내역>',
+  none: '없음',
 });
 
 const MESSAGE = Object.freeze({ read, print });
