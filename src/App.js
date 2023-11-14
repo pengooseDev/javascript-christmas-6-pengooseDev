@@ -15,6 +15,8 @@ class App {
     const reservationDate = await this.#reservationProcess();
     const bill = await this.#reboundOnError(() => this.#orderProcess());
     const promotions = this.#promotionProcess({ reservationDate, bill });
+
+    this.#printOrderResult({ reservationDate, bill, promotions });
   }
 
   /**
@@ -54,6 +56,12 @@ class App {
       month,
       date,
     });
+  }
+
+  #printOrderResult({ reservationDate, bill, promotions }) {
+    const { month, date } = reservationDate;
+
+    this.#view.printReservationDate({ month, date });
   }
 }
 
