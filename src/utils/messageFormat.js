@@ -43,8 +43,12 @@ const MessageFormat = {
     return `<할인 전 총주문 금액>\n${formattedPrice}원\n`;
   },
 
-  serviceMenu(serviceMessage) {
-    return `<증정 메뉴>\n${serviceMessage}\n`;
+  serviceMenu(parsedMessage) {
+    return `<증정 메뉴>\n${parsedMessage}\n`;
+  },
+
+  promotionList(parsedMessage) {
+    return `<혜택 내역>\n${parsedMessage}\n`;
   },
 
   totalPromotion(totalPromotion) {
@@ -59,6 +63,10 @@ const MessageFormat = {
     const formattedPrice = this.formatMoney(discountedPrice);
 
     return `<할인 후 예상 결제 금액>\n${formattedPrice}원\n`;
+  },
+
+  promotionBadge({ month, badge }) {
+    return `<${month}월 이벤트 배지>\n${badge}`;
   },
 };
 

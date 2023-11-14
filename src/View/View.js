@@ -54,7 +54,18 @@ class View {
     this.#printBill(bill);
     this.#printPromotions(promotionData);
     this.#printDiscountedPrice({ bill, promotionData });
-    // this.#printPromotionBadge(badge);
+    this.#printPromotionBadge({
+      month: reservationDate.month,
+      badge: promotionData.badge?.reward,
+    });
+  }
+
+  #printPromotionBadge({ month, badge }) {
+    this.#optionalRender({
+      option: badge !== null,
+      onTrue: this.#messageFormat.promotionBadge({ month, badge }),
+      onFalse: this.#messageFormat.promotionBadge({ month, badge }),
+    });
   }
 
   #printDiscountedPrice({ bill, promotionData }) {
@@ -144,8 +155,8 @@ class View {
 
     this.#optionalRender({
       option: promotions.length,
-      onTrue: this.#messageFormat.serviceMenu(parsedMessage),
-      onFalse: this.#messageFormat.serviceMenu(MESSAGE.print.none),
+      onTrue: this.#messageFormat.promotionList(parsedMessage),
+      onFalse: this.#messageFormat.promotionList(MESSAGE.print.none),
     });
   }
 
