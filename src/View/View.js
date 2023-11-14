@@ -48,23 +48,23 @@ class View {
   }
 
   printOrderResult({ reservationDate, bill, promotionData }) {
-    const { month, date } = reservationDate;
-    const { orderedMenus, totalPrice } = bill;
-    const { totalDiscount, totalPromotion, badge } = promotionData;
-    this.#printReservationDate({ month, date });
-    this.#printBill({ orderedMenus, totalPrice });
+    this.#printReservationDate(reservationDate);
+    this.#printBill(bill);
     // this.#printPromotions(promotionData);
     // this.#printTotalPrice({ totalPrice, totalDiscount });
     // this.#printPromotionBadge(badge);
   }
 
-  #printReservationDate({ month, date }) {
+  #printReservationDate(reservationDate) {
+    const { month, date } = reservationDate;
     const message = MessageFormat.reservationDate({ month, date });
 
     this.#outputView.print(message);
   }
 
-  #printBill({ orderedMenus, totalPrice }) {
+  #printBill(bill) {
+    const { orderedMenus, totalPrice } = bill;
+
     this.#printOrderedMenus(orderedMenus);
     this.#printTotalPrice(totalPrice);
   }
