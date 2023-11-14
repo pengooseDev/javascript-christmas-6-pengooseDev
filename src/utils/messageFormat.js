@@ -23,6 +23,12 @@ const MessageFormat = {
     return `${name} ${quantity}개`;
   },
 
+  concatNameWithReward({ name, reward }) {
+    const formattedReward = this.formatMoney(reward);
+
+    return `${name}: -${formattedReward}원`;
+  },
+
   orderedMenus(menus) {
     return `<주문 메뉴>\n${menus}\n`;
   },

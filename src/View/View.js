@@ -53,18 +53,19 @@ class View {
     this.#printReservationDate(reservationDate);
     this.#printBill(bill);
     this.#printPromotions(promotionData);
-    // this.#printTotalPrice({ totalPrice, totalDiscount });
+    // this.#printDiscountedPrice({ totalPrice, totalDiscount });
     // this.#printPromotionBadge(badge);
   }
 
   #printPromotions(promotionData) {
-    const { promotions, totalDiscount, totalPromotion, badge } = promotionData;
+    const { promotions, totalDiscount, totalPromotion } = promotionData;
     const serviceMenus = promotions.filter(
       ({ promotionType }) =>
         promotionType === Promotion.promotionType.serviceMenu,
     );
 
     this.#printServiceMenu(serviceMenus);
+    this.#printPromotionList(promotions);
   }
 
   #printReservationDate(reservationDate) {
@@ -104,21 +105,49 @@ class View {
   }
 
   #printServiceMenu(serviceMenus) {
-    const servicesMessage = this.#parseServiceMenuMessage(serviceMenus);
+    const parsedMessage = this.#parseServiceMenuMessage(serviceMenus);
 
     this.#optionalRender({
       option: serviceMenus.length,
-      onTrue: this.#messageFormat.serviceMenu(servicesMessage),
+      onTrue: this.#messageFormat.serviceMenu(parsedMessage),
       onFalse: this.#messageFormat.serviceMenu(MESSAGE.print.none),
     });
   }
 
   #parseServiceMenuMessage(serviceMenus) {
-    const services = serviceMenus.map(({ reward: { name, quantity } }) =>
+    const parsedServices = serviceMenus.map(({ reward: { name, quantity } }) =>
       this.#messageFormat.concatNameWithQuantity({ name, quantity }),
     );
 
-    return this.#messageFormat.concatArrayWithEndOfLine(services);
+    return this.#messageFormat.concatArrayWithEndOfLine(parsedServices);
+  }
+
+  #printPromotionList(promotions) {
+    const parsedMessage = this.#parsePromotionMessage(promotions);
+
+    this.#optionalRender({
+      option: promotions.length,
+      onTrue: this.#messageFormat.serviceMenu(parsedMessage),
+      onFalse: this.#messageFormat.serviceMenu(MESSAGE.print.none),
+    });
+  }
+
+  #parsePromotionMessage(promotions) {
+    const parsedPromotions = promotions
+      .map(this.#parsePromotionType)
+      .map(({ name, reward }) =>
+        this.#messageFormat.concatNameWithReward({ name, reward }),
+      );
+
+    return this.#messageFormat.concatArrayWithEndOfLine(parsedPromotions);
+  }
+
+  #parsePromotionType({ promotionType, promotionName, reward }) {
+    if (promotionType === Promotion.promotionType.serviceMenu) {
+      return { name: promotionName, reward: reward.value * reward.quantity };
+    }
+
+    return { name: promotionName, reward };
   }
 }
 
