@@ -46,6 +46,12 @@ const MessageFormat = {
   serviceMenu(serviceMessage) {
     return `<증정 메뉴>\n${serviceMessage}\n`;
   },
+
+  totalPromotion(totalPromotion) {
+    const formattedPromotion = this.formatMoney(totalPromotion);
+
+    return `<총혜택 금액>\n-${formattedPromotion}원\n`;
+  },
 };
 
 export default MessageFormat;

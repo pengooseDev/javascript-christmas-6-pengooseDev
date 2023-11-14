@@ -58,14 +58,11 @@ class View {
   }
 
   #printPromotions(promotionData) {
-    const { promotions, totalDiscount, totalPromotion } = promotionData;
-    const serviceMenus = promotions.filter(
-      ({ promotionType }) =>
-        promotionType === Promotion.promotionType.serviceMenu,
-    );
+    const { promotions, totalPromotion } = promotionData;
 
-    this.#printServiceMenu(serviceMenus);
+    this.#printServiceMenu(promotions);
     this.#printPromotionList(promotions);
+    this.#printTotalPromotion(totalPromotion);
   }
 
   #printReservationDate(reservationDate) {
@@ -104,7 +101,17 @@ class View {
     return this.#outputView.print(onTrue);
   }
 
-  #printServiceMenu(serviceMenus) {
+  #getServiceMenus(promotions) {
+    const serviceMenus = promotions.filter(
+      ({ promotionType }) =>
+        promotionType === Promotion.promotionType.serviceMenu,
+    );
+
+    return serviceMenus;
+  }
+
+  #printServiceMenu(promotions) {
+    const serviceMenus = this.#getServiceMenus(promotions);
     const parsedMessage = this.#parseServiceMenuMessage(serviceMenus);
 
     this.#optionalRender({
@@ -148,6 +155,12 @@ class View {
     }
 
     return { name: promotionName, reward };
+  }
+
+  #printTotalPromotion(totalPromotion) {
+    const message = this.#messageFormat.totalPromotion(totalPromotion);
+
+    this.#outputView.print(message);
   }
 }
 
