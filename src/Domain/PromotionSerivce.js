@@ -15,10 +15,11 @@ class PromotionService {
 
   getPromotion({ month, date }) {
     const promotions = this.#checkPromotions(month, date);
+    const totalPromotion = this.#getTotalPromotion(promotions);
     const totalDiscount = this.#getTotalDiscount(promotions);
-    const badge = this.#getBadgePromotion(totalDiscount);
+    const badge = this.#getBadgePromotion(totalPromotion);
 
-    return { promotions, totalDiscount, badge };
+    return { promotions, totalDiscount, totalPromotion, badge };
   }
 
   #checkPromotions(month, date) {
@@ -28,6 +29,15 @@ class PromotionService {
   }
 
   #getTotalDiscount(promotions) {
+    return promotions.reduce((acc, { promotionType, reward }) => {
+      if (promotionType === Promotion.promotionType.discount)
+        return acc + reward;
+
+      return acc;
+    }, 0);
+  }
+
+  #getTotalPromotion(promotions) {
     return promotions.reduce((acc, { promotionType, reward }) => {
       if (promotionType === Promotion.promotionType.discount)
         return acc + reward;
