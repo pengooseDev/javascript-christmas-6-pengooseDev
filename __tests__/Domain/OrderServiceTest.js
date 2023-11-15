@@ -2,7 +2,7 @@ import OrderService from '../../src/Domain/OrderService.js';
 import MENU from '../../src/constants/menu.js';
 import ERROR from '../../src/constants/error.js';
 
-describe('OrderService 테스트', () => {
+describe('OrderService 클래스 테스트', () => {
   let orderServiceInstance;
 
   beforeEach(() => {
