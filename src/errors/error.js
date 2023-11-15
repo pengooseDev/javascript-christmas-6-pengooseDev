@@ -18,6 +18,10 @@ class CustomError extends Error {
   static orderService(message) {
     return new CustomError(message, ERROR.name.orderService);
   }
+
+  static promotion(message) {
+    return new CustomError(message, ERROR.name.promotion);
+  }
 }
 
 export default CustomError;

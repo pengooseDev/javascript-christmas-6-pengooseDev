@@ -12,8 +12,8 @@ const Calendar = {
   missionWeekend: [5, 6],
 
   getMonth() {
-    // const month = new Date().getMonth() + 1;
-    const month = this.missionMonth; // 주어진 미션은 실제 달력에 기반하지 않고, 12월로 상정하였기에 아래와 같이 상수로 지정.
+    // 주어진 미션은 실제 달력에 기반하지 않고, 12월로 상정하였기에 아래와 같이 상수로 지정.
+    const month = this.missionMonth;
     this.validateMonth(month);
 
     return this.missionMonth;
@@ -61,7 +61,7 @@ const Calendar = {
   },
 
   isChristmas(month, day) {
-    return month === 12 && day === 25;
+    return month === this.missionMonth && day === 25;
   },
 };
 

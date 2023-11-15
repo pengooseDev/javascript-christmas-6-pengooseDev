@@ -48,7 +48,6 @@ const InputView = {
     return parseInt(userInput, this.defaultRadix);
   },
 
-  // FIXME: View가 날짜에 대한 정보를 들고있는게 맞나? OrderService로 추후에 넘기기.
   validateDate(date) {
     if (
       !Validator.isPositiveInteger(date) ||

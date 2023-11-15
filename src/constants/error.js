@@ -26,12 +26,18 @@ const calendar = Object.freeze({
   invalidDay: '유효하지 않은 일입니다.',
 });
 
+const promotion = Object.freeze({
+  invalidQuantity: '유효하지 않은 수량입니다.',
+  invalidDay: '유효하지 않은 날짜입니다.',
+});
+
 const message = Object.freeze({
   input,
   date,
   menuBoard,
   order,
   calendar,
+  promotion,
 });
 
 const name = Object.freeze({
@@ -39,6 +45,7 @@ const name = Object.freeze({
   menuBoard: 'menuBoard',
   orderService: 'orderService',
   calendar: 'calendar',
+  promotion: 'promotion',
 });
 
 const ERROR = Object.freeze({

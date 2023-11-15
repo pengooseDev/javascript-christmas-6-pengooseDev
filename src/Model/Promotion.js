@@ -1,4 +1,8 @@
 import CHRISTMAS_PROMOTION from '../constants/christmasPromotion.js';
+import ERROR from '../constants/error.js';
+import CustomError from '../errors/error.js';
+import Validator from '../utils/Validator.js';
+import Calendar from './Calendar.js';
 
 class Promotion {
   static promotionType = Object.freeze({
@@ -14,9 +18,9 @@ class Promotion {
   }
 
   static createChristmasDiscount(day) {
-    const discount =
-      CHRISTMAS_PROMOTION.dateDiscount.christmasDefault +
-      CHRISTMAS_PROMOTION.dateDiscount.christmasDdayUnit * (day - 1);
+    this.#validateDay(day);
+    const discount = this.#getChristmasDiscount(day);
+
     return new Promotion({
       promotionType: this.promotionType.discount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.christmas,
@@ -24,19 +28,23 @@ class Promotion {
     });
   }
 
-  static createWeekdayDiscount(quatity) {
+  static createWeekdayDiscount(quantity) {
+    this.#validateQuantity(quantity);
+
     return new Promotion({
       promotionType: this.promotionType.discount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.weekday,
-      reward: CHRISTMAS_PROMOTION.dateDiscount.weekday * quatity,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.weekday * quantity,
     });
   }
 
-  static createWeekendDiscount(quatity) {
+  static createWeekendDiscount(quantity) {
+    this.#validateQuantity(quantity);
+
     return new Promotion({
       promotionType: this.promotionType.discount,
       promotionName: CHRISTMAS_PROMOTION.promotionName.weekend,
-      reward: CHRISTMAS_PROMOTION.dateDiscount.weekend * quatity,
+      reward: CHRISTMAS_PROMOTION.dateDiscount.weekend * quantity,
     });
   }
 
@@ -61,7 +69,6 @@ class Promotion {
 
   static createBadge(totalDiscount) {
     const badge = this.#checkBadge(totalDiscount);
-    if (!badge) return null;
 
     return new Promotion({
       promotionType: this.promotionType.badge,
@@ -78,6 +85,28 @@ class Promotion {
       promotionName: CHRISTMAS_PROMOTION.promotionName.serviceMenu,
       reward: CHRISTMAS_PROMOTION.serviceMenu,
     });
+  }
+
+  static #validateDay(day) {
+    if (
+      !Validator.isPositiveInteger(day) ||
+      !Validator.isInRange(day, Calendar.initialDay, Calendar.maxDay)
+    ) {
+      throw CustomError.promotion(ERROR.message.invalidDay);
+    }
+  }
+
+  static #validateQuantity(quantity) {
+    if (!Validator.isPositiveInteger(quantity) && quantity !== 0) {
+      throw CustomError.promotion(ERROR.message.promotion.invalidQuantity);
+    }
+  }
+
+  static #getChristmasDiscount(day) {
+    return (
+      CHRISTMAS_PROMOTION.dateDiscount.christmasDefault +
+      CHRISTMAS_PROMOTION.dateDiscount.christmasDdayUnit * (day - 1)
+    );
   }
 }
 
